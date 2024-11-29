@@ -80,7 +80,7 @@ def main():
     rvecs = calibratio['rvecs']
     tvecs = calibratio['tvecs']
 
-    cap = cv2.VideoCapture('test_videos/project_video02.mp4')
+    cap = cv2.VideoCapture('test_videos/project_video03.mp4')
     allLinePoints = []
 
     while cap.isOpened():
