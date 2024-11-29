@@ -66,7 +66,7 @@ def drawCurve(image, points, color):
             curvePoints.append((x, y))
 
     curvePoints = np.array([curvePoints], dtype=np.int32)
-    cv2.polylines(image, curvePoints, isClosed=False, color=color, thickness=3)
+    cv2.polylines(image, curvePoints, isClosed=False, color=color, thickness=30)
 
     return image
 
@@ -98,8 +98,8 @@ def main():
         srcPoints = np.float32([
             [0, h],   # Bottom-left corner
             [w, h], # Bottom-right corner
-            [w*62/100, h*63/100], # Top-right corner
-            [w*46/100, h*63/100]  # Top-left corner
+            [w*61/100, h*64/100], # Top-right corner
+            [w*46/100, h*64/100]  # Top-left corner
         ])
 
         dstPoints = np.float32([
@@ -116,14 +116,14 @@ def main():
         cv2.fillPoly(mask, [srcPoints_int], (0, 0, 0))
 
         maskedImage = cv2.bitwise_and(undistortedImg, undistortedImg, mask=mask)
-        cv2.imshow("maskedImage", maskedImage)
-
-        cv2.imshow("mask", mask)
 
         transformMatrix = cv2.getPerspectiveTransform(srcPoints, dstPoints)
         warpedImage = cv2.warpPerspective(undistortedImg, transformMatrix, (w, h))
 
+        warpedImage2 = warpedImage.copy()
+
         cv2.imshow("warpedImage", warpedImage)
+        
 
         mask = np.ones((h, w), dtype=np.uint8) * 255
 
@@ -131,17 +131,12 @@ def main():
 
         cv2.fillPoly(mask, [srcPoints_int], (0, 0, 0))
 
-        maskedImage = cv2.bitwise_and(img, img, mask=mask)
-        cv2.imshow("maskedImage", maskedImage)
-
-        cv2.imshow("mask", mask)
-
         midPoint = w // 2
         rightLane = list()
         leftLane = list()
 
         gray = cv2.cvtColor(warpedImage, cv2.COLOR_BGR2GRAY)
-        gaussian = cv2.GaussianBlur(gray, (17, 17), 0)
+        gaussian = cv2.GaussianBlur(gray, (7, 7), 0)
         ret, thrash = cv2.threshold(gaussian, 135, 150, cv2.THRESH_BINARY)
 
         canny = cv2.Canny(thrash, 130, 150)
@@ -156,6 +151,8 @@ def main():
                 allLinePoints.append(p1)
                 allLinePoints.append(p2)
 
+                cv2.line(warpedImage2, p1, p2, 255)
+
                 if (x1 > midPoint):
                     rightLane.append(p1)
                     rightLane.append(p2)
@@ -166,8 +163,18 @@ def main():
 
         rightLineDrawn = drawCurve(warpedImage,rightLane, 255)
         leftLineDrawn = drawCurve(warpedImage,leftLane, 255)
+
+        cv2.imshow("warpedImage2", warpedImage2)
+
+        inverseMatrix = cv2.getPerspectiveTransform(dstPoints, srcPoints)
+
+        reconstructedImage = cv2.warpPerspective(warpedImage, inverseMatrix, (w, h))
+        cv2.imshow("reconstructedImage", reconstructedImage)
+
+        finalImage = cv2.bitwise_or(maskedImage, reconstructedImage)
         
         cv2.imshow("warpedImage done", warpedImage)
+        cv2.imshow("finalImage done", finalImage)
 
         if cv2.waitKey(100) & 0xFF == 27: break 
     cap.release()
