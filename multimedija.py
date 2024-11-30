@@ -93,7 +93,15 @@ def main():
     cv2.imshow('undistortedChessImg', np.hstack((originalChessImage, undistortedChessImg)))
 
     cap = cv2.VideoCapture('test_videos/project_video01.mp4')
-    allLinePoints = []
+
+    frameWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frameHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    outputVideoPath = 'output_video.mp4'
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+    out = cv2.VideoWriter(outputVideoPath, fourcc, fps, (frameWidth, frameHeight))
+
 
     while cap.isOpened():
         ret, img = cap.read()
@@ -184,7 +192,9 @@ def main():
 
         cv2.imshow('finalImage done', np.hstack((undistortedImg, finalImage)))
 
-        if cv2.waitKey(100) & 0xFF == 27: break 
+        out.write(finalImage)
+
+        if cv2.waitKey(60) & 0xFF == 27: break 
     cap.release()
     cv2.destroyAllWindows()
 
