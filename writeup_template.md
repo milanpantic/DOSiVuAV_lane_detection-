@@ -56,6 +56,8 @@ Kasnije je fajl učitan i korišćen za korekciju distorzije pomoću cv2.undisto
 
 Slika je konvertovana u crno-belu koristeći cv2.cvtColor, a zatim je primenjen cv2.GaussianBlur da bi se smanjio šum. Nakon toga korišćena je cv2.threshold funkcija za pravljenje binarne slike, gde su vrednosti iznad određenog praga postavljene na belo. Na kraju je primenjena cv2.Canny za detekciju ivica, kako bi se bolje izdvojili oštri prelazi, što je korišćeno za prepoznavanje traka na putu.
 
+linije 158 - 160
+
 ![distortion corrected image](exported_img/binary_image.png)
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
@@ -63,6 +65,8 @@ Slika je konvertovana u crno-belu koristeći cv2.cvtColor, a zatim je primenjen 
 Prvo su definisane početne tačke (srcPoints) koje predstavljaju ključne tačke na slici iz originalnog videa. Zatim su definisane tačke odredišta (dstPoints), koje predstavljaju kako bi te tačke izgledale iz ptičje perspektive.
 
 Korišćene su funkcije cv2.getPerspectiveTransform za kreiranje matrice transformacije i cv2.warpPerspective za primenu te transformacije na neiskrivljenu sliku, čime je dobijena transformisana slika (warpedImage). Ovaj proces omogućava da se put prikaže kao pravougaonik, olakšavajući detekciju traka.
+
+linije 119 - 145
 
 ![distortion corrected image](exported_img/transformedImg.png)
 
@@ -72,7 +76,7 @@ U kodu je korišćena funkcija cv2.HoughLinesP, čiji je ulazni parametar izlaz 
 
 Pošto je slika koja sadrži iscrtane linije zapravo slika iz ptičje perspektive, odrađena je transformacija nazad u originalnu perspektivu
 
-
+linije 166 - 191, 48 - 71
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
