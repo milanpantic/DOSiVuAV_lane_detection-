@@ -92,5 +92,6 @@ https://drive.google.com/file/d/1E_t68nRpwW03J9-tlKVzHnQLQjPzuyVd/view?usp=drive
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-TODO: Add your text here!!!
+U implementaciji projekta, suočeni su sa problemima u detekciji linija pri većim krivinama i lošijim kvalitetima slika, kao što su loša osvetljenost ili zamućenje. Takođe, fiksni parametri korišćeni u Canny i Hough transformacijama nisu uvek davali optimalne rezultate. Da bi se rezultati poboljšali, verovatno je potrebno koristiti neke druge tehnike izdvajanja ivica i određivanje leve i desne linije, što u trenutnoj izvedbi, nije najbolje rešeno.
+
 
