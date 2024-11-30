@@ -92,7 +92,7 @@ def main():
     
     cv2.imshow('undistortedChessImg', np.hstack((originalChessImage, undistortedChessImg)))
 
-    cap = cv2.VideoCapture('test_videos/project_video03.mp4')
+    cap = cv2.VideoCapture('test_videos/project_video01.mp4')
     allLinePoints = []
 
     while cap.isOpened():
@@ -163,9 +163,6 @@ def main():
                 x1, y1, x2, y2 = points[0]
                 p1, p2 = (x1, y1), (x2, y2)
                 
-                allLinePoints.append(p1)
-                allLinePoints.append(p2)
-
                 cv2.line(warpedImage2, p1, p2, 255)
 
                 if (x1 > midPoint):
