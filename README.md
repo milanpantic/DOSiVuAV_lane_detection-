@@ -1,9 +1,3 @@
-## Writeup Template
-
-### You use this file as a template for your writeup.
-
----
-
 **Lane Finding Project**
 
 The goals / steps of this project are the following:
