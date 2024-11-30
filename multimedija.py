@@ -80,6 +80,18 @@ def main():
     rvecs = calibratio['rvecs']
     tvecs = calibratio['tvecs']
 
+    ##########################################
+    ####              Tasks               ####
+    ##########################################
+    ###          Camera Calibration       ####
+
+    originalChessImage = cv2.imread('camera_cal/calibration3.jpg')
+    chessH, chessW = originalChessImage.shape[:2]
+    newCameraMtxChess, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (chessW, chessH), 1, (chessW, chessH))
+    undistortedChessImg = cv2.undistort(originalChessImage, mtx, dist, None, newCameraMtxChess)
+    
+    cv2.imshow('undistortedChessImg', np.hstack((originalChessImage, undistortedChessImg)))
+
     cap = cv2.VideoCapture('test_videos/project_video03.mp4')
     allLinePoints = []
 
@@ -93,7 +105,8 @@ def main():
 
         newCameraMtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
         undistortedImg = cv2.undistort(img, mtx, dist, None, newCameraMtx)
-        cv2.imshow("undistorted orignal image", undistortedImg)
+        cv2.imshow('undistorted orignal image', np.hstack((img, undistortedImg)))
+
 
         srcPoints = np.float32([
             [0, h],   # Bottom-left corner
@@ -122,9 +135,8 @@ def main():
 
         warpedImage2 = warpedImage.copy()
 
-        cv2.imshow("warpedImage", warpedImage)
+        cv2.imshow('warpedImage', np.hstack((undistortedImg, warpedImage)))
         
-
         mask = np.ones((h, w), dtype=np.uint8) * 255
 
         srcPoints_int = srcPoints.astype(np.int32)
@@ -140,6 +152,9 @@ def main():
         ret, thrash = cv2.threshold(gaussian, 135, 150, cv2.THRESH_BINARY)
 
         canny = cv2.Canny(thrash, 130, 150)
+    
+        cv2.imshow("Binary Image", canny)
+
         lines = cv2.HoughLinesP(canny, 1, np.pi / 180, threshold=25, minLineLength=200, maxLineGap=200)
         if lines is not None:
             for points in lines:
@@ -164,17 +179,13 @@ def main():
         rightLineDrawn = drawCurve(warpedImage,rightLane, 255)
         leftLineDrawn = drawCurve(warpedImage,leftLane, 255)
 
-        cv2.imshow("warpedImage2", warpedImage2)
-
         inverseMatrix = cv2.getPerspectiveTransform(dstPoints, srcPoints)
 
         reconstructedImage = cv2.warpPerspective(warpedImage, inverseMatrix, (w, h))
-        cv2.imshow("reconstructedImage", reconstructedImage)
 
         finalImage = cv2.bitwise_or(maskedImage, reconstructedImage)
-        
-        cv2.imshow("warpedImage done", warpedImage)
-        cv2.imshow("finalImage done", finalImage)
+
+        cv2.imshow('finalImage done', np.hstack((undistortedImg, finalImage)))
 
         if cv2.waitKey(100) & 0xFF == 27: break 
     cap.release()

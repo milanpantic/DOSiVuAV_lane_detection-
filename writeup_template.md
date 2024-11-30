@@ -33,27 +33,32 @@ The goals / steps of this project are the following:
 
 #### 1. Provide a Writeup that includes all the rubric points and how you addressed each one.
 
-You're reading it!
+Done
 
 ### Camera Calibration
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-TODO: Add your text here!!!
+Za izračunavanje matrice kamere i koeficijenata distorzije, korišćene su slike šahovske table snimljene iz različitih uglova. Korišćene su funkcije cv2.findChessboardCorners za pronalaženje unutrašnjih uglova šahovske table i cv2.calibrateCamera za izračunavanje matrice kamere (mtx) i koeficijenata distorzije (dist). Dobijeni rezultati sačuvani su u fajl (calib.npz) za dalju upotrebu.
+
+Kasnije je fajl učitan i korišćen za korekciju distorzije pomoću cv2.undistort funkcije, a nova matrica kamere je izračunata pomoću cv2.getOptimalNewCameraMatrix.
+
+![distortion corrected image](exported_img/undisorted.png)
 
 ### Pipeline (single images)
 
 #### 1. Provide an example of a distortion-corrected image.
 
-TODO: Add your text here!!!
+![distortion corrected image](exported_img/undisorted_road.png)
+
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-TODO: Add your text here!!!
+binary_image.png
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-TODO: Add your text here!!!
+transformedImg.png
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
@@ -61,11 +66,11 @@ TODO: Add your text here!!!
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-TODO: Add your text here!!!
+Not done
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-TODO: Add your text here!!!
+final_image.png
 
 ### Pipeline (video)
 
